@@ -1,12 +1,41 @@
-import React from 'react';
+import React from 'react'
 
-function App() {
+const App = (): JSX.Element => {
+  // logic
+  const endpoint = process.env.REACT_APP_SERVER_ADDRESS
+  console.log('🚀 : endpoint==>', endpoint)
+  const getData = async (): Promise<void> => {
+    const response = await fetch(`${endpoint}/data`)
+    const result = await response.json()
+    console.log('🚀 : result==>', result)
+  }
+
+  const postData = async (): Promise<void> => {
+    const requestData = {
+      data: 'test중 입니다22',
+      name: 'somi',
+    }
+    const request = await fetch(`${endpoint}/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestData),
+    })
+    const response = await request.json()
+    console.log('🚀 : response==>', response)
+  }
+
+  // view
   return (
     <div className="App">
       Hello World
-      <div className="text-blue-500">tailwind test</div>
+      <button type="button" className="block bg-slate-400 p-1 rounded-lg" onClick={getData}>
+        getData
+      </button>
+      <button type="button" className="block bg-slate-400 p-1 rounded-lg" onClick={postData}>
+        postData
+      </button>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
