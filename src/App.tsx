@@ -12,8 +12,7 @@ const App = (): JSX.Element => {
 
   const postData = async (): Promise<void> => {
     const requestData = {
-      data: 'test중 입니다22',
-      name: 'somi',
+      message: '안녕? 뭐하고 있어?',
     }
     const request = await fetch(`${endpoint}/chat`, {
       method: 'POST',
