@@ -1,39 +1,24 @@
 import React from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import UserInfo from './pages/UserInfo'
+import Home from './pages/Home'
+import PartnerInfo from './pages/PartnerInfo'
+import Chat from './pages/Chat'
 
 const App = (): JSX.Element => {
   // logic
-  const endpoint = process.env.REACT_APP_SERVER_ADDRESS
-  console.log('🚀 : endpoint==>', endpoint)
-  const getData = async (): Promise<void> => {
-    const response = await fetch(`${endpoint}/data`)
-    const result = await response.json()
-    console.log('🚀 : result==>', result)
-  }
-
-  const postData = async (): Promise<void> => {
-    const requestData = {
-      message: '안녕? 뭐하고 있어?',
-    }
-    const request = await fetch(`${endpoint}/chat`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(requestData),
-    })
-    const response = await request.json()
-    console.log('🚀 : response==>', response)
-  }
 
   // view
   return (
-    <div className="App">
-      Hello World
-      <button type="button" className="block bg-slate-400 p-1 rounded-lg" onClick={getData}>
-        getData
-      </button>
-      <button type="button" className="block bg-slate-400 p-1 rounded-lg" onClick={postData}>
-        postData
-      </button>
-    </div>
+    <BrowserRouter>
+      <div className="color"></div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/user-info" element={<UserInfo />} />
+        <Route path="/partner-info" element={<PartnerInfo />} />
+        <Route path="/chat" element={<Chat />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
