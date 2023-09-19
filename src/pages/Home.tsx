@@ -24,7 +24,7 @@ const Home = (): JSX.Element => {
           mainTitle={'소개팅 1초전'}
           subTitle="소개팅 전, 어떤 얘기를 해야되나 고민되시나요? 미리 연습하고 가보세요!"
         />
-        <Button onClick={handleClick} />
+        <Button text="Get started" onClick={handleClick} />
       </div>
     </div>
   )

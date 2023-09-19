@@ -118,7 +118,7 @@ const UserInfo = (): JSX.Element => {
         {/* info 영역 */}
 
         {/* Button 영역 */}
-        <Button onClick={handleClick} />
+        <Button text="Next" onClick={handleClick} />
         {/* Button 영역 */}
       </div>
     </div>
