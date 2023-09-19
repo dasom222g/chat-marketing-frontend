@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     extend: {
       fontSize: {
+        none: '0',
         '4.5xl': '2.625rem',
       },
       colors: {
@@ -14,8 +15,8 @@ module.exports = {
         'date-blue-700': '#6045FF',
         'date-gray-700': '#383737',
         'date-gray-400': '#797C7B',
-        'date-gray-300': '#D1D1D6',
-        'date-gray-200': '#979797',
+        'date-gray-300': '#979797',
+        'date-gray-200': '#D1D1D6',
         'date-gray-100': '#F2F7FB',
       },
       width: {

@@ -10,7 +10,7 @@ const UserInfo = (): JSX.Element => {
 
   // view
   return (
-    <div className="w-full h-full px-6 break-keep overflow-auto">
+    <div className="w-full h-full px-6 pt-10 break-keep overflow-auto">
       <i className="w-168 h-168 rounded-full bg-date-pink-500 fixed -z-10 -left-60 -top-104"></i>
       <div className="h-full flex flex-col">
         <Title mainTitle="당신을 알려주세요" />
@@ -30,7 +30,7 @@ const UserInfo = (): JSX.Element => {
                 <div className="pb-4 grayscale peer-checked:grayscale-0">
                   <img src="./images/male.svg" alt="male" className="block w-3/5 mx-auto" />
                 </div>
-                <span className="w-5 h-5 inline-block align-middle rounded bg-date-gray-300 peer-checked:bg-date-blue-500">
+                <span className="w-5 h-5 inline-block align-middle rounded bg-date-gray-200 peer-checked:bg-date-blue-500">
                   <i className="block w-full h-full bg-[url('../public/images/check.svg')] bg-no-repeat bg-center"></i>
                 </span>
                 <span className="inline-block align-middle px-2">남자</span>
@@ -45,10 +45,10 @@ const UserInfo = (): JSX.Element => {
                   value={'여자'}
                   className="hidden peer"
                 />
-                <div className="pb-4 grayscale peer-checked:grayscale-0">
-                  <img src="./images/female.svg" alt="female" className="block w-3/5 mx-auto" />
+                <div className="pb-4 w-3/5 mx-auto grayscale peer-checked:grayscale-0">
+                  <img src="./images/female.svg" alt="female" className="block" />
                 </div>
-                <span className="w-5 h-5 inline-block align-middle rounded bg-date-gray-300 peer-checked:bg-date-blue-500">
+                <span className="w-5 h-5 inline-block align-middle rounded bg-date-gray-200 peer-checked:bg-date-blue-500">
                   <i className="block w-full h-full bg-[url('../public/images/check.svg')] bg-no-repeat bg-center"></i>
                 </span>
                 <span className="inline-block align-middle px-2">여자</span>
@@ -72,7 +72,7 @@ const UserInfo = (): JSX.Element => {
                   placeholder="홍길동"
                   className="border placeholder-gray-400 focus:outline-none
                       focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
-                      border-date-gray-300 rounded-2xl placeholder:text-date-gray-300"
+                      border-date-gray-200 rounded-2xl placeholder:text-date-gray-200"
                 />
               </div>
             </div>
@@ -90,7 +90,7 @@ const UserInfo = (): JSX.Element => {
                   placeholder="20"
                   className="border placeholder-gray-400 focus:outline-none
                       focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
-                      border-date-gray-300 rounded-2xl placeholder:text-date-gray-300"
+                      border-date-gray-200 rounded-2xl placeholder:text-date-gray-200"
                 />
               </div>
             </div>
@@ -108,7 +108,7 @@ const UserInfo = (): JSX.Element => {
                   placeholder="ENTJ"
                   className="border placeholder-gray-400 focus:outline-none
                       focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
-                      border-date-gray-300 rounded-2xl placeholder:text-date-gray-300"
+                      border-date-gray-200 rounded-2xl placeholder:text-date-gray-200"
                 />
               </div>
             </div>
