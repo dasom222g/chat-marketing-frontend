@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { FC } from 'react'
 
-const Title = (): JSX.Element => {
+interface TitleProps {
+  mainTitle: string
+  subTitle?: string
+}
+
+const Title: FC<TitleProps> = ({ mainTitle, subTitle }): JSX.Element => {
   return (
-    <div className="px-8 pt-16">
-      <h1 className="text-4.5xl font-black text-white">소개팅 1초전</h1>
-      <span className="block text-sm mt-3 text-white break-keep pr-7">
-        소개팅 전, 어떤 얘기를 해야되나 고민되시나요? 미리 연습하고 가보세요!
-      </span>
+    <div className="px-2 pt-16">
+      <h1 className="text-4.5xl font-black text-white max-w-3/4">{mainTitle}</h1>
+      {subTitle && (
+        <span className="block text-sm mt-3 text-white break-keep pr-7">{subTitle}</span>
+      )}
     </div>
   )
 }

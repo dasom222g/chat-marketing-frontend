@@ -1,12 +1,19 @@
-import React from 'react'
+import React, { FC } from 'react'
 
-const Button = (): JSX.Element => {
+interface ButtonProps {
+  onClick: () => void
+}
+
+const Button: FC<ButtonProps> = ({ onClick }): JSX.Element => {
   return (
-    <button
-      className="w-2/3 py-4 px-1 block mb-12 bg-date-pink-700 rounded-3xl text-white text-sm font-medium"
-      type="button">
-      Get started
-    </button>
+    <div className="mt-auto py-12 w-full flex justify-center">
+      <button
+        className="w-full py-4 px-1 block bg-date-pink-700 rounded-3xl text-white text-sm font-medium"
+        type="button"
+        onClick={onClick}>
+        Get started
+      </button>
+    </div>
   )
 }
 
