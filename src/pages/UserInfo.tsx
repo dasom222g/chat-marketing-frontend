@@ -12,11 +12,17 @@ const UserInfo = (): JSX.Element => {
   return (
     <div className="w-full h-full px-6 pt-10 break-keep overflow-auto">
       <i className="w-168 h-168 rounded-full bg-date-pink-500 fixed -z-10 -left-60 -top-104"></i>
+      {/* START:뒤로가기 버튼 */}
+      <button type="button" className="text-none absolute top-6 left-4 px-4 py-2">
+        <img src="./images/arrow-prev.svg" alt="뒤로가기" className="block" />
+        뒤로가기
+      </button>
+      {/* END:뒤로가기 버튼 */}
       <div className="h-full flex flex-col">
         <Title mainTitle="당신을 알려주세요" />
-        {/* info 영역 */}
+        {/* START:info 영역 */}
         <form className="pt-20">
-          {/* 성별 체크 */}
+          {/* START:성별 체크 */}
           <div className="flex py-8">
             <div className="w-full text-center">
               <label htmlFor="male" className="peer-checked:bg-red-500">
@@ -55,8 +61,8 @@ const UserInfo = (): JSX.Element => {
               </label>
             </div>
           </div>
-          {/* 성별 체크 */}
-          {/* input 영역 */}
+          {/* END:성별 체크 */}
+          {/* START:input 영역 */}
           <div>
             <div className="py-2 first:pt-0 last:pb-0 ">
               <div className="relative">
@@ -113,13 +119,13 @@ const UserInfo = (): JSX.Element => {
               </div>
             </div>
           </div>
-          {/* input 영역 */}
+          {/* END:input 영역 */}
         </form>
-        {/* info 영역 */}
+        {/* END:info 영역 */}
 
-        {/* Button 영역 */}
+        {/* START:Button 영역 */}
         <Button text="Next" onClick={handleClick} />
-        {/* Button 영역 */}
+        {/* END:Button 영역 */}
       </div>
     </div>
   )
