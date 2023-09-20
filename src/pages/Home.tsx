@@ -20,11 +20,15 @@ const Home = (): JSX.Element => {
         <img src="./images/hero.png" alt="hero" />
       </div>
       <div className="h-full flex flex-col">
+        {/* START:타이틀 영역 */}
         <Title
           mainTitle={'소개팅 1초전'}
           subTitle="소개팅 전, 어떤 얘기를 해야되나 고민되시나요? 미리 연습하고 가보세요!"
         />
+        {/* END:타이틀 영역 */}
+        {/* START:Button 영역 */}
         <Button text="Get started" onClick={handleClick} />
+        {/* END:Button 영역 */}
       </div>
     </div>
   )
