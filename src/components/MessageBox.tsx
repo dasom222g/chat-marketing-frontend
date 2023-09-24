@@ -8,8 +8,8 @@ interface MessageBoxProps {
 const MessageBox: FC<MessageBoxProps> = ({ messages }): JSX.Element => {
   return (
     <>
-      {messages.map((data) => (
-        <>
+      {messages.map((data, index) => (
+        <div key={index}>
           {data.role === 'user' ? (
             // user 채팅
             <div className="py-4 max-w-3/4 ml-auto text-right">
@@ -39,7 +39,7 @@ const MessageBox: FC<MessageBoxProps> = ({ messages }): JSX.Element => {
               </div>
             </div>
           )}
-        </>
+        </div>
       ))}
     </>
   )
