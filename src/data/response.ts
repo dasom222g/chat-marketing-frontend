@@ -40,5 +40,5 @@ export const messages: MessageType[] = [
   {
     role: 'assistant',
     content: 'assistant입니다'
-  }
+  },
 ]
