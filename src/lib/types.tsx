@@ -44,3 +44,8 @@ export interface InfoContentType {
   text: 'Name' | 'Age' | 'MBTI'
   value: string
 }
+
+export interface MessageType {
+  role: 'user' | 'assistant'
+  content: string
+}
