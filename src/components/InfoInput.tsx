@@ -7,7 +7,7 @@ interface InfoInputProps {
 
 const InfoInput: FC<InfoInputProps> = ({ content }): JSX.Element => {
   // logic
-  const { id, label, text, value } = content
+  const { label, text } = content
 
   // view
   return (
