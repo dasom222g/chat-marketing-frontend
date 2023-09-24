@@ -1,4 +1,4 @@
-import { GenderType, InfoContentType } from '../lib/types';
+import { GenderType, InfoContentType, MessageType } from '../lib/types';
 
 export const infoContents: InfoContentType[] = [
   {
@@ -30,4 +30,15 @@ export const genders:GenderType[] = [
     type: 'female',
     text: '여자'
   },
+]
+
+export const messages: MessageType[] = [
+  {
+    role: 'user',
+    content: 'user입니다'
+  },
+  {
+    role: 'assistant',
+    content: 'assistant입니다'
+  }
 ]
