@@ -23,7 +23,7 @@ type MbtiType =
   | 'ESFJ'
   | 'ESFP'
 
-export interface GenderType {
+export interface InfoGenderType {
   id: number
   type: 'male' | 'female'
   text: '남자' | '여자'
@@ -32,10 +32,10 @@ export interface GenderType {
 export interface InfoType {
   id: number
   type: 'user' | 'partner'
-  gender: GenderType
+  gender: InfoGenderType
   name: string
   age: string
-  mbti: MbtiType
+  mbti: MbtiType | null
 }
 
 export interface InfoContentType {

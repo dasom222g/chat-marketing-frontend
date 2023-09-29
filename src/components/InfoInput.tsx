@@ -3,7 +3,7 @@ import { InfoContentType } from '../lib/types'
 
 interface InfoInputProps {
   content: InfoContentType
-  onChange: (resultData: InfoContentType) => void
+  onChange: (data: InfoContentType) => void
 }
 
 const InfoInput: FC<InfoInputProps> = ({ content, onChange }): JSX.Element => {

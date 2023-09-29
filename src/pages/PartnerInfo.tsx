@@ -6,13 +6,31 @@ import InfoInput from '../components/InfoInput'
 import PrevButton from '../components/PrevButton'
 import Title from '../components/Title'
 import { genders, infoContents } from '../data/response'
+import { InfoContentType, InfoGenderType, InfoType } from '../lib/types'
+import { useState } from 'react'
+import { initialPartnerInfo } from '../data/initialData'
 
 const PartnerInfo = (): JSX.Element => {
   // logic
+
   const history = useNavigate()
 
+  const [partnerInfo, setPartnerInfo] = useState<InfoType>(initialPartnerInfo)
+
   const handleClick = (): void => {
+    console.log('partnerInfo', partnerInfo)
     history('/chat')
+  }
+
+  const handleInfoContentData = (data: InfoContentType): void => {
+    const { label, value } = data
+    const result = { ...partnerInfo, [label]: value }
+    setPartnerInfo(result)
+  }
+
+  const handleInfoGenderData = (gender: InfoGenderType): void => {
+    const result = { ...partnerInfo, gender }
+    setPartnerInfo(result)
   }
 
   // view
@@ -27,13 +45,19 @@ const PartnerInfo = (): JSX.Element => {
         {/* START:info 영역 */}
         <form className="pt-20">
           {/* START:성별 체크 */}
-          <InfoGender genders={genders} />
+          <InfoGender
+            items={genders}
+            defaultCheckedData={partnerInfo.gender}
+            onChange={handleInfoGenderData}
+          />
           {/* END:성별 체크 */}
           {/* START:input 영역 */}
           <div>
-            {infoContents.map((content) => (
-              <InfoInput key={content.id} content={content} />
-            ))}
+            <div>
+              {infoContents.map((content) => (
+                <InfoInput key={content.id} content={content} onChange={handleInfoContentData} />
+              ))}
+            </div>
           </div>
           {/* END:input 영역 */}
         </form>
