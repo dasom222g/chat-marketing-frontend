@@ -5,17 +5,20 @@ export const infoContents: InfoContentType[] = [
     id: 1,
     label: 'name',
     text: 'Name',
-    value: ''
+    value: '',
+    placeholder: '홍길동'
   }, {
     id: 2,
     label: 'age',
     text: 'Age',
-    value: ''
+    value: '',
+    placeholder: '20'
   }, {
     id: 3,
     label: 'mbti',
     text: 'MBTI',
-    value: ''
+    value: '',
+    placeholder: 'ENTJ'
   }
 ]
 

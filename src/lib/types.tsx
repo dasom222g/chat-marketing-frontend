@@ -42,6 +42,7 @@ export interface InfoContentType {
   id: number
   label: 'name' | 'age' | 'mbti'
   text: 'Name' | 'Age' | 'MBTI'
+  placeholder: string
   value: string
 }
 

@@ -7,7 +7,7 @@ interface InfoInputProps {
 
 const InfoInput: FC<InfoInputProps> = ({ content }): JSX.Element => {
   // logic
-  const { label, text } = content
+  const { label, text, placeholder } = content
 
   // view
   return (
@@ -23,7 +23,7 @@ const InfoInput: FC<InfoInputProps> = ({ content }): JSX.Element => {
           type="text"
           id={label}
           name={label}
-          placeholder="홍길동"
+          placeholder={placeholder}
           className="border placeholder-gray-400 focus:outline-none
                       focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
                       border-date-gray-200 rounded-2xl placeholder:text-date-gray-200"

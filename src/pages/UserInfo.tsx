@@ -1,4 +1,5 @@
 // import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button'
 import InfoGender from '../components/InfoGender'
 import InfoInput from '../components/InfoInput'
@@ -8,9 +9,10 @@ import { genders, infoContents } from '../data/response'
 
 const UserInfo = (): JSX.Element => {
   // logic
+  const history = useNavigate()
 
   const handleClick = (): void => {
-    console.log('handleClick')
+    history('/partner-info')
   }
 
   // view

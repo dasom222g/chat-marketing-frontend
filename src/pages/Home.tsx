@@ -8,7 +8,6 @@ const Home = (): JSX.Element => {
   const history = useNavigate()
 
   const handleClick = (): void => {
-    console.log('Click')
     history('/user-info')
   }
 
