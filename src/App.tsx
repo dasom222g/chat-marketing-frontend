@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import UserInfo from './pages/UserInfo'
 import Home from './pages/Home'
@@ -7,8 +7,11 @@ import Chat from './pages/Chat'
 import { InfoType } from './lib/types'
 
 const App = (): JSX.Element => {
-  const [infoList, setInfoList] = useState<InfoType[]>([])
   // logic
+  const endpoint = process.env.REACT_APP_SERVER_ADDRESS
+
+  const [infoList, setInfoList] = useState<InfoType[]>([])
+
   const addInfo = (data: InfoType): void => {
     const duplicateIndex = infoList.findIndex((info) => info.type === data.type)
     const resultList =
@@ -18,17 +21,13 @@ const App = (): JSX.Element => {
     setInfoList(resultList)
   }
 
-  useEffect(() => {
-    console.log('infoList', infoList)
-  }, [infoList])
-
   // view
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/user-info" element={<UserInfo addInfo={addInfo} />} />
       <Route path="/partner-info" element={<PartnerInfo addInfo={addInfo} />} />
-      <Route path="/chat" element={<Chat />} />
+      <Route path="/chat" element={<Chat infoList={infoList} endpoint={endpoint || ''} />} />
     </Routes>
   )
 }

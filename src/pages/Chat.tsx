@@ -1,9 +1,39 @@
-import React from 'react'
+import React, { FC, useCallback, useEffect } from 'react'
 import MessageBox from '../components/MessageBox'
 import { messages } from '../data/response'
 import PrevButton from '../components/PrevButton'
+import { InfoType } from '../lib/types'
 
-const Chat = (): JSX.Element => {
+interface ChatProps {
+  infoList: InfoType[]
+  endpoint: string
+}
+
+const Chat: FC<ChatProps> = ({ infoList, endpoint }): JSX.Element => {
+  // logic
+
+  const postData = useCallback(
+    async (infoList: InfoType[]): Promise<void> => {
+      const requestData = {
+        message: '안녕? 뭐하고 있어?',
+        infoList,
+      }
+      const request = await fetch(`${endpoint}/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestData),
+      })
+      const response = await request.json()
+      console.log('🚀 : response==>', response)
+    },
+    [endpoint],
+  )
+
+  useEffect(() => {
+    postData(infoList)
+  }, [infoList, postData])
+
+  // view
   return (
     <div className="w-full h-full px-6 pt-10 break-keep overflow-auto">
       {/* START:뒤로가기 버튼 */}

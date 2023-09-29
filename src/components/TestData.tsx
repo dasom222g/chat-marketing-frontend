@@ -3,7 +3,6 @@ import React from 'react'
 const TestData = (): JSX.Element => {
   // logic
   const endpoint = process.env.REACT_APP_SERVER_ADDRESS
-  console.log('🚀 : endpoint==>', endpoint)
   const getData = async (): Promise<void> => {
     const response = await fetch(`${endpoint}/data`)
     const result = await response.json()
