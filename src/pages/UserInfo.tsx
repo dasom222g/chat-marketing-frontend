@@ -7,17 +7,21 @@ import PrevButton from '../components/PrevButton'
 import Title from '../components/Title'
 import { genders, infoContents } from '../data/response'
 import { InfoContentType, InfoGenderType, InfoType } from '../lib/types'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { initialUserInfo } from '../data/initialData'
 
-const UserInfo = (): JSX.Element => {
+interface UserInfoProps {
+  addInfo: (info: InfoType) => void
+}
+
+const UserInfo: FC<UserInfoProps> = ({ addInfo }): JSX.Element => {
   // logic
   const history = useNavigate()
 
   const [userInfo, setUserInfo] = useState<InfoType>(initialUserInfo)
 
   const handleNext = (): void => {
-    console.log('userInfo', userInfo)
+    addInfo(userInfo)
     history('/partner-info')
   }
 
