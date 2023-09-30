@@ -29,6 +29,8 @@ export interface InfoGenderType {
   text: '남자' | '여자'
 }
 
+export type InfoCategoryType = 'user' | 'partner'
+
 export interface InfoType {
   id: number
   type: 'user' | 'partner'

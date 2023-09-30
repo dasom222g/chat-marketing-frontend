@@ -5,33 +5,40 @@ import PrevButton from '../components/PrevButton'
 import { InfoType } from '../lib/types'
 
 interface ChatProps {
-  infoList: InfoType[]
+  userInfo: InfoType
+  partnerInfo: InfoType
   endpoint: string
 }
 
-const Chat: FC<ChatProps> = ({ infoList, endpoint }): JSX.Element => {
+const Chat: FC<ChatProps> = ({ userInfo, partnerInfo, endpoint }): JSX.Element => {
   // logic
 
-  const postData = useCallback(
-    async (infoList: InfoType[]): Promise<void> => {
-      const requestData = {
-        message: '안녕? 뭐하고 있어?',
-        infoList,
-      }
-      const request = await fetch(`${endpoint}/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestData),
-      })
-      const response = await request.json()
-      console.log('🚀 : response==>', response)
-    },
-    [endpoint],
-  )
+  const sendMessage = async (): Promise<void> => {
+    const requestData = {
+      message: '안녕? 뭐하고 있어?',
+    }
+    const request = await fetch(`${endpoint}/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestData),
+    })
+    const response = await request.json()
+    console.log('🚀 : response==>', response)
+  }
+
+  const sendInfo = useCallback(async (): Promise<void> => {
+    const request = await fetch(`${endpoint}/info`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userInfo, partnerInfo }),
+    })
+    const response = await request.json()
+    console.log('🚀 : response==>', response)
+  }, [endpoint, partnerInfo, userInfo])
 
   useEffect(() => {
-    postData(infoList)
-  }, [infoList, postData])
+    sendInfo()
+  }, [sendInfo])
 
   // view
   return (
