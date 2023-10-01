@@ -1,11 +1,13 @@
 import React, { FC, useEffect, useRef } from 'react'
-import { MessageType } from '../lib/types'
+import { InfoType, MessageType } from '../lib/types'
 
 interface MessageBoxProps {
+  partnerInfo: InfoType
   messages: MessageType[]
 }
 
-const MessageBox: FC<MessageBoxProps> = ({ messages }): JSX.Element => {
+const MessageBox: FC<MessageBoxProps> = ({ partnerInfo, messages }): JSX.Element => {
+  const { name, gender } = partnerInfo
   // logic
   const ref = useRef<HTMLDivElement>(null)
 
@@ -37,10 +39,10 @@ const MessageBox: FC<MessageBoxProps> = ({ messages }): JSX.Element => {
             // assistant 채팅
             <div className="py-4 max-w-3/4 flex">
               <div className="min-w-10 h-10 bg-date-blue-500 rounded-full">
-                <img src="./images/female.svg" alt="" />
+                <img src={`./images/${gender.type}.svg`} alt="" />
               </div>
               <div className="pl-3">
-                <span className="text-base font-medium">홍길동</span>
+                <span className="text-base font-medium">{name}</span>
                 <div className="pt-3 pl-2">
                   <span className="inline-block px-4 py-3 text-sm rounded-xl text-left bg-date-gray-100 rounded-tl-none">
                     {data.content}
