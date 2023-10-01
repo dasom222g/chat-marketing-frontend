@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useRef } from 'react'
 import { MessageType } from '../lib/types'
 
 interface MessageBoxProps {
@@ -6,6 +6,19 @@ interface MessageBoxProps {
 }
 
 const MessageBox: FC<MessageBoxProps> = ({ messages }): JSX.Element => {
+  // logic
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    // 자동 스크롤
+    if (!messages.length) return
+    ref.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end',
+    })
+  }, [messages.length])
+
+  // view
   return (
     <>
       {messages.map((data, index) => (
@@ -16,14 +29,14 @@ const MessageBox: FC<MessageBoxProps> = ({ messages }): JSX.Element => {
               <span className="inline-block px-4 py-3 text-sm rounded-xl text-left bg-date-blue-600 text-white rounded-tr-none">
                 {data.content}
               </span>
-              <span className="block text-right text-date-gray-400 text-xs mt-2 px-2">
+              {/* <span className="block text-right text-date-gray-400 text-xs mt-2 px-2">
                 09:25 AM
-              </span>
+              </span> */}
             </div>
           ) : (
             // assistant 채팅
             <div className="py-4 max-w-3/4 flex">
-              <div className="w-10 h-10 bg-date-blue-500 rounded-full">
+              <div className="min-w-10 h-10 bg-date-blue-500 rounded-full">
                 <img src="./images/female.svg" alt="" />
               </div>
               <div className="pl-3">
@@ -32,15 +45,16 @@ const MessageBox: FC<MessageBoxProps> = ({ messages }): JSX.Element => {
                   <span className="inline-block px-4 py-3 text-sm rounded-xl text-left bg-date-gray-100 rounded-tl-none">
                     {data.content}
                   </span>
-                  <span className="block text-right text-date-gray-400 text-xs mt-2 px-2">
+                  {/* <span className="block text-right text-date-gray-400 text-xs mt-2 px-2">
                     09:25 AM
-                  </span>
+                  </span> */}
                 </div>
               </div>
             </div>
           )}
         </div>
       ))}
+      <div ref={ref} />
     </>
   )
 }
