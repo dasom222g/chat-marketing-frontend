@@ -1,8 +1,7 @@
-import React, { FC, useCallback, useEffect } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import MessageBox from '../components/MessageBox'
-import { messages } from '../data/response'
 import PrevButton from '../components/PrevButton'
-import { InfoType } from '../lib/types'
+import { InfoType, MessageType } from '../lib/types'
 
 interface ChatProps {
   userInfo: InfoType
@@ -13,27 +12,47 @@ interface ChatProps {
 const Chat: FC<ChatProps> = ({ userInfo, partnerInfo, endpoint }): JSX.Element => {
   // logic
 
-  const sendMessage = async (): Promise<void> => {
-    const requestData = {
-      message: '안녕? 뭐하고 있어?',
-    }
-    const request = await fetch(`${endpoint}/chat`, {
+  const [value, setValue] = useState('')
+  const [infoMessages, setInfoMessages] = useState<MessageType[]>([])
+  const [messages, setMessages] = useState<MessageType[]>([])
+
+  const hadleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const { value } = event.target
+    setValue(value)
+  }
+
+  const hadleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault()
+    const userMessage: MessageType = { role: 'user', content: value.trim() }
+    setMessages((prev) => [...prev, userMessage])
+    sendMessage(userMessage)
+    setValue('') // input 초기화
+  }
+
+  const sendMessage = async (userMessage: MessageType): Promise<void> => {
+    const response = await fetch(`${endpoint}/message`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(requestData),
+      body: JSON.stringify({ userMessage, messages: [...infoMessages, ...messages] }),
     })
-    const response = await request.json()
-    console.log('🚀 : response==>', response)
+    const result = await response.json()
+    setMessages((prev) => [...prev, { role: 'assistant', content: result.data.content }])
   }
 
   const sendInfo = useCallback(async (): Promise<void> => {
-    const request = await fetch(`${endpoint}/info`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userInfo, partnerInfo }),
-    })
-    const response = await request.json()
-    console.log('🚀 : response==>', response)
+    // TODO: 로딩 스피너 on
+    try {
+      const response = await fetch(`${endpoint}/info`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userInfo, partnerInfo }),
+      })
+      const result = await response.json()
+      setInfoMessages(result.data)
+    } catch (error) {
+      console.error(error)
+    }
+    // TODO: 로딩 스피너 off
   }, [endpoint, partnerInfo, userInfo])
 
   useEffect(() => {
@@ -49,24 +68,28 @@ const Chat: FC<ChatProps> = ({ userInfo, partnerInfo, endpoint }): JSX.Element =
       <div className="h-full flex flex-col">
         {/* START:헤더 영역 */}
         <div className="-mx-6 -mt-10 py-7 bg-date-blue-600">
-          <span className="block text-xl text-center text-white">홍길동</span>
+          <span className="block text-xl text-center text-white">{partnerInfo.name}</span>
         </div>
         {/* END:헤더 영역 */}
         {/* START:채팅 영역 */}
         <div className="overflow-auto">
-          <MessageBox messages={messages} />
+          <MessageBox messages={messages} partnerInfo={partnerInfo} />
         </div>
         {/* END:채팅 영역 */}
         {/* START:메시지 입력 영역 */}
         <div className="mt-auto flex py-5 -mx-2 border-t border-gray-100">
-          <div className="w-full px-2 h-full">
+          <form id="sendForm" className="w-full px-2 h-full" onSubmit={hadleSubmit}>
             <input
               className="w-full text-sm px-3 py-2 h-full block rounded-xl bg-gray-100 focus:"
               type="text"
+              name="message"
+              value={value}
+              onChange={hadleChange}
             />
-          </div>
+          </form>
           <button
-            type="button"
+            type="submit"
+            form="sendForm"
             className="w-10 min-w-10 h-10 inline-block rounded-full bg-date-blue-600 text-none px-2 bg-[url('../public/images/send.svg')] bg-no-repeat bg-center">
             보내기
           </button>
