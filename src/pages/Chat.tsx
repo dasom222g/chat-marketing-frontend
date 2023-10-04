@@ -2,6 +2,7 @@ import React, { FC, useCallback, useEffect, useState } from 'react'
 import MessageBox from '../components/MessageBox'
 import PrevButton from '../components/PrevButton'
 import { InfoType, MessageType } from '../lib/types'
+import { MoonLoader } from 'react-spinners'
 
 interface ChatProps {
   userInfo: InfoType
@@ -15,6 +16,7 @@ const Chat: FC<ChatProps> = ({ userInfo, partnerInfo, endpoint }): JSX.Element =
   const [value, setValue] = useState('')
   const [infoMessages, setInfoMessages] = useState<MessageType[]>([])
   const [messages, setMessages] = useState<MessageType[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   const hadleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const { value } = event.target
@@ -41,6 +43,7 @@ const Chat: FC<ChatProps> = ({ userInfo, partnerInfo, endpoint }): JSX.Element =
 
   const sendInfo = useCallback(async (): Promise<void> => {
     // TODO: 로딩 스피너 on
+    setIsLoading(true)
     try {
       const response = await fetch(`${endpoint}/info`, {
         method: 'POST',
@@ -52,16 +55,28 @@ const Chat: FC<ChatProps> = ({ userInfo, partnerInfo, endpoint }): JSX.Element =
     } catch (error) {
       console.error(error)
     }
+    setIsLoading(false)
     // TODO: 로딩 스피너 off
   }, [endpoint, partnerInfo, userInfo])
 
   useEffect(() => {
-    sendInfo()
+    userInfo.name && partnerInfo.name && sendInfo()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sendInfo])
 
   // view
   return (
     <div className="w-full h-full px-6 pt-10 break-keep overflow-auto">
+      {/* START: 로딩 스피너 */}
+      {isLoading && (
+        <div className="absolute inset-0">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <MoonLoader color="#846FFE" />
+          </div>
+        </div>
+      )}
+
+      {/* START: 로딩 스피너 */}
       {/* START:뒤로가기 버튼 */}
       <PrevButton />
       {/* END:뒤로가기 버튼 */}
