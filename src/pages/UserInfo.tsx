@@ -64,7 +64,7 @@ const UserInfo: FC<UserInfoProps> = ({ addInfo }): JSX.Element => {
         {/* END:info 영역 */}
 
         {/* START:Button 영역 */}
-        <Button text="Next" onClick={handleNext} />
+        <Button text="Next" color="bg-date-pink-700" onClick={handleNext} />
         {/* END:Button 영역 */}
       </div>
     </div>

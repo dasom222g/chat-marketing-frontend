@@ -68,7 +68,7 @@ const PartnerInfo: FC<PartnerInfoProps> = ({ addInfo }): JSX.Element => {
         {/* END:info 영역 */}
 
         {/* START:Button 영역 */}
-        <Button text="Go chat" onClick={handleClick} />
+        <Button text="Go chat" color="bg-date-blue-700" onClick={handleClick} />
         {/* END:Button 영역 */}
       </div>
     </div>

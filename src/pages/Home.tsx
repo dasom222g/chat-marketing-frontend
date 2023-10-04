@@ -26,7 +26,7 @@ const Home = (): JSX.Element => {
         />
         {/* END:타이틀 영역 */}
         {/* START:Button 영역 */}
-        <Button text="Get started" onClick={handleClick} />
+        <Button text="Get started" color="bg-date-pink-700" onClick={handleClick} />
         {/* END:Button 영역 */}
       </div>
     </div>
