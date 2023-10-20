@@ -1,12 +1,14 @@
 import React, { FC, useEffect, useRef } from 'react'
 import { InfoType, MessageType } from '../lib/types'
+import { PulseLoader } from 'react-spinners'
 
 interface MessageBoxProps {
   partnerInfo: InfoType
   messages: MessageType[]
+  isLoading: boolean
 }
 
-const MessageBox: FC<MessageBoxProps> = ({ partnerInfo, messages }): JSX.Element => {
+const MessageBox: FC<MessageBoxProps> = ({ partnerInfo, messages, isLoading }): JSX.Element => {
   const { name, gender } = partnerInfo
   // logic
   const ref = useRef<HTMLDivElement>(null)
@@ -38,7 +40,7 @@ const MessageBox: FC<MessageBoxProps> = ({ partnerInfo, messages }): JSX.Element
           ) : (
             // assistant 채팅
             <div className="py-4 max-w-3/4 flex">
-              <div className="min-w-10 h-10 bg-date-blue-500 rounded-full">
+              <div className="min-w-10 w-10 max h-10 bg-date-blue-500 rounded-full">
                 <img src={`./images/${gender.type}.svg`} alt="" />
               </div>
               <div className="pl-3">
@@ -56,6 +58,23 @@ const MessageBox: FC<MessageBoxProps> = ({ partnerInfo, messages }): JSX.Element
           )}
         </div>
       ))}
+      {isLoading && (
+        <div className="py-4 max-w-3/4 flex">
+          <div className="min-w-10 w-10 max h-10 bg-date-blue-500 rounded-full">
+            <img src={`./images/${gender.type}.svg`} alt="" />
+          </div>
+          <div className="pl-3">
+            <span className="text-base font-medium">{name}</span>
+            <div className="pt-3 pl-2">
+              <span className="inline-block px-4 py-3 text-sm rounded-xl text-left bg-date-gray-100 rounded-tl-none">
+                {/* {data.content} */}
+                <PulseLoader size={5} color="#846FFE" />
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+      <div>{isLoading}</div>
       <div ref={ref} />
     </>
   )

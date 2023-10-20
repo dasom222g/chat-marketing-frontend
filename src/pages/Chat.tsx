@@ -16,7 +16,8 @@ const Chat: FC<ChatProps> = ({ userInfo, partnerInfo, endpoint }): JSX.Element =
   const [value, setValue] = useState('')
   const [infoMessages, setInfoMessages] = useState<MessageType[]>([])
   const [messages, setMessages] = useState<MessageType[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [isInfoLoading, setIsInfoLoading] = useState(true)
+  const [isMessageLoading, setIsMessageLoading] = useState(false)
 
   const hadleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const { value } = event.target
@@ -32,18 +33,24 @@ const Chat: FC<ChatProps> = ({ userInfo, partnerInfo, endpoint }): JSX.Element =
   }
 
   const sendMessage = async (userMessage: MessageType): Promise<void> => {
-    const response = await fetch(`${endpoint}/message`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userMessage, messages: [...infoMessages, ...messages] }),
-    })
-    const result = await response.json()
-    setMessages((prev) => [...prev, { role: 'assistant', content: result.data.content }])
+    setIsMessageLoading(true)
+    try {
+      const response = await fetch(`${endpoint}/message`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userMessage, messages: [...infoMessages, ...messages] }),
+      })
+      const result = await response.json()
+      setMessages((prev) => [...prev, { role: 'assistant', content: result.data.content }])
+    } catch (error) {
+      console.error(error)
+    }
+    setIsMessageLoading(false)
   }
 
   const sendInfo = useCallback(async (): Promise<void> => {
     // TODO: 로딩 스피너 on
-    setIsLoading(true)
+    setIsInfoLoading(true)
     try {
       const response = await fetch(`${endpoint}/info`, {
         method: 'POST',
@@ -55,7 +62,7 @@ const Chat: FC<ChatProps> = ({ userInfo, partnerInfo, endpoint }): JSX.Element =
     } catch (error) {
       console.error(error)
     }
-    setIsLoading(false)
+    setIsInfoLoading(false)
     // TODO: 로딩 스피너 off
   }, [endpoint, partnerInfo, userInfo])
 
@@ -67,9 +74,8 @@ const Chat: FC<ChatProps> = ({ userInfo, partnerInfo, endpoint }): JSX.Element =
   // view
   return (
     <div className="w-full h-full px-6 pt-10 break-keep overflow-auto">
-      {/* START: 로딩 스피너 */}
-      {isLoading && (
-        <div className="absolute inset-0">
+      {isInfoLoading && (
+        <div className="absolute inset-0 bg-white bg-opacity-70">
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <MoonLoader color="#846FFE" />
           </div>
@@ -88,7 +94,7 @@ const Chat: FC<ChatProps> = ({ userInfo, partnerInfo, endpoint }): JSX.Element =
         {/* END:헤더 영역 */}
         {/* START:채팅 영역 */}
         <div className="overflow-auto">
-          <MessageBox messages={messages} partnerInfo={partnerInfo} />
+          <MessageBox messages={messages} partnerInfo={partnerInfo} isLoading={isMessageLoading} />
         </div>
         {/* END:채팅 영역 */}
         {/* START:메시지 입력 영역 */}
