@@ -6,7 +6,7 @@ const TestData = (): JSX.Element => {
   const getData = async (): Promise<void> => {
     const response = await fetch(`${endpoint}/data`)
     const result = await response.json()
-    console.log('🚀 : result==>', result)
+    console.log('result==>', result)
   }
 
   const postData = async (): Promise<void> => {
@@ -19,7 +19,7 @@ const TestData = (): JSX.Element => {
       body: JSON.stringify(requestData),
     })
     const response = await request.json()
-    console.log('🚀 : response==>', response)
+    console.log('response==>', response)
   }
 
   // view
