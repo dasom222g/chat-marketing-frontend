@@ -1,6 +1,6 @@
-# chat-date-frontend
+# chat-chef-frontend
 
-1 second before blind date with chat gpt API
+Yummy Chef with chatGpt API
 
 ---
 
@@ -23,4 +23,3 @@ Getting start
 ## Start working
 
     $ yarn start
-
