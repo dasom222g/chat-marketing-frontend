@@ -62,7 +62,7 @@ const MessageBox: FC<MessageBoxProps> = ({ messages, name, isLoading }): JSX.Ele
           <div className="min-w-10 w-10 max h-10 bg-chef-green-500 rounded-full overflow-hidden">
             <img src={'./images/chef.svg'} alt="" />
           </div>
-          <div className="pl-2">
+          <div className="pl-3">
             <span className="text-base font-medium">{name}</span>
             <div className="pt-3 pl-2">
               <span className="inline-block px-4 py-3 text-sm rounded-xl text-left bg-chef-gray-100 rounded-tl-none">
