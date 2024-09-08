@@ -45,7 +45,7 @@ const InfoGender: FC<InfoGenderProps> = ({ items, defaultCheckedData, onChange }
                 className="block w-3/5 mx-auto"
               />
             </div>
-            <span className="w-5 h-5 inline-block align-middle rounded bg-date-gray-200 peer-checked:bg-date-blue-500">
+            <span className="w-5 h-5 inline-block align-middle rounded bg-chef-gray-200 peer-checked:bg-chef-blue-500">
               <i className="block w-full h-full bg-[url('../public/images/check.svg')] bg-no-repeat bg-center"></i>
             </span>
             <span className="inline-block align-middle px-2">{gender.text}</span>

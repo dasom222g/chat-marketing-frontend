@@ -88,7 +88,7 @@ const Chat: FC<ChatProps> = ({ userInfo, partnerInfo, endpoint }): JSX.Element =
       {/* END:뒤로가기 버튼 */}
       <div className="h-full flex flex-col">
         {/* START:헤더 영역 */}
-        <div className="-mx-6 -mt-10 py-7 bg-date-blue-600">
+        <div className="-mx-6 -mt-10 py-7 bg-chef-blue-600">
           <span className="block text-xl text-center text-white">{partnerInfo.name}</span>
         </div>
         {/* END:헤더 영역 */}
@@ -111,7 +111,7 @@ const Chat: FC<ChatProps> = ({ userInfo, partnerInfo, endpoint }): JSX.Element =
           <button
             type="submit"
             form="sendForm"
-            className="w-10 min-w-10 h-10 inline-block rounded-full bg-date-blue-600 text-none px-2 bg-[url('../public/images/send.svg')] bg-no-repeat bg-center">
+            className="w-10 min-w-10 h-10 inline-block rounded-full bg-chef-blue-600 text-none px-2 bg-[url('../public/images/send.svg')] bg-no-repeat bg-center">
             보내기
           </button>
         </div>

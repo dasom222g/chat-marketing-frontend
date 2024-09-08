@@ -40,7 +40,7 @@ const PartnerInfo: FC<PartnerInfoProps> = ({ addInfo }): JSX.Element => {
   // view
   return (
     <div className="w-full h-full px-6 pt-10 break-keep overflow-auto">
-      <i className="w-168 h-168 rounded-full bg-date-blue-600 fixed -z-10 -left-60 -top-104"></i>
+      <i className="w-168 h-168 rounded-full bg-chef-blue-600 fixed -z-10 -left-60 -top-104"></i>
       {/* START:뒤로가기 버튼 */}
       <PrevButton />
       {/* END:뒤로가기 버튼 */}
@@ -68,7 +68,7 @@ const PartnerInfo: FC<PartnerInfoProps> = ({ addInfo }): JSX.Element => {
         {/* END:info 영역 */}
 
         {/* START:Button 영역 */}
-        <Button text="Go chat" color="bg-date-blue-700" onClick={handleClick} />
+        <Button text="Go chat" color="bg-chef-blue-700" onClick={handleClick} />
         {/* END:Button 영역 */}
       </div>
     </div>
