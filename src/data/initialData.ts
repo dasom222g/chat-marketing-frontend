@@ -1,6 +1,8 @@
-import { InfoGenderType, InfoType } from '../lib/types';
+import { InfoGenderType, InfoType, IngredientType } from '../lib/types';
 
-const initialGender:InfoGenderType = {
+// -------------
+
+const initialGender: InfoGenderType = {
   id: 1,
   type: 'male',
   text: '남자'

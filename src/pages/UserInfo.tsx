@@ -4,10 +4,9 @@ import Button from '../components/Button'
 import InfoInput from '../components/InfoInput'
 import PrevButton from '../components/PrevButton'
 import Title from '../components/Title'
-import { infoContents } from '../data/response'
-import { InfoContentType, InfoType } from '../lib/types'
+import { InfoType, IngredientType } from '../lib/types'
 import { FC, useState } from 'react'
-import { initialUserInfo } from '../data/initialData'
+import AddButton from '../components/AddButton'
 
 interface UserInfoProps {
   addInfo: (info: InfoType) => void
@@ -17,17 +16,32 @@ const UserInfo: FC<UserInfoProps> = ({ addInfo }): JSX.Element => {
   // logic
   const history = useNavigate()
 
-  const [userInfo, setUserInfo] = useState<InfoType>(initialUserInfo)
+  const [ingredientList, setIngredientList] = useState<IngredientType[]>([])
 
-  const handleNext = (): void => {
-    addInfo(userInfo)
-    history('/partner-info')
+  const addIngredient = (): void => {
+    const id = Number(Date.now().toString())
+    const newIngredient: IngredientType = {
+      id,
+      label: `ingredient${id}`,
+      text: '재료명',
+      value: '',
+    }
+    setIngredientList((prev) => [...prev, newIngredient])
   }
 
-  const handleInfoContentData = (data: InfoContentType): void => {
-    const { label, value } = data
-    const result = { ...userInfo, [label]: value }
-    setUserInfo(result)
+  const handleNext = (): void => {
+    // addInfo(userInfo)
+    const filterDataList = ingredientList.filter((item) => item.value.trim() !== '')
+    filterDataList.length ? history('/chat') : alert('재료명을 1개이상 입력해주세요')
+  }
+
+  const handleChangeData = (data: IngredientType): void => {
+    console.log('data', data)
+    setIngredientList((prev) => prev.map((item) => (item.id === data.id ? data : item)))
+  }
+
+  const hanldeRemove = (id: number): void => {
+    setIngredientList((prev) => prev.filter((item) => item.id !== id))
   }
 
   // view
@@ -39,18 +53,27 @@ const UserInfo: FC<UserInfoProps> = ({ addInfo }): JSX.Element => {
       {/* END:뒤로가기 버튼 */}
       <div className="h-full flex flex-col">
         <Title mainTitle="당신의 냉장고를 알려주세요" />
-        {/* START:info 영역 */}
-        <form className="pt-20">
-          {/* START:input 영역 */}
-          <div>
-            {infoContents.map((content) => (
-              <InfoInput key={content.id} content={content} onChange={handleInfoContentData} />
-            ))}
-          </div>
-          {/* END:input 영역 */}
-        </form>
-        {/* END:info 영역 */}
-
+        {/* START:form 영역 */}
+        <div className="mt-20 overflow-auto">
+          <form>
+            {/* START:input 영역 */}
+            <div>
+              {ingredientList.map((item) => (
+                <InfoInput
+                  key={item.id}
+                  content={item}
+                  onChange={handleChangeData}
+                  onRemove={hanldeRemove}
+                />
+              ))}
+            </div>
+            {/* END:input 영역 */}
+          </form>
+        </div>
+        {/* END:form 영역 */}
+        {/* START:Add button 영역 */}
+        <AddButton onClick={addIngredient} />
+        {/* END:Add button 영역 */}
         {/* START:Button 영역 */}
         <Button text="Next" color="bg-chef-green-500" onClick={handleNext} />
         {/* END:Button 영역 */}

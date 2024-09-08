@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import UserInfo from './pages/UserInfo'
 import Home from './pages/Home'
-import PartnerInfo from './pages/PartnerInfo'
 import Chat from './pages/Chat'
 import { InfoCategoryType, InfoType } from './lib/types'
 import { initialUserInfo } from './data/initialData'
@@ -32,10 +31,6 @@ const App = (): JSX.Element => {
       <Route
         path="/user-info"
         element={<UserInfo addInfo={(data: InfoType) => addInfo(data, 'user')} />}
-      />
-      <Route
-        path="/partner-info"
-        element={<PartnerInfo addInfo={(data: InfoType) => addInfo(data, 'partner')} />}
       />
       <Route
         path="/chat"

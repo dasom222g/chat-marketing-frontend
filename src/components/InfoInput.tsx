@@ -1,21 +1,23 @@
 import React, { FC, useState } from 'react'
-import { InfoContentType } from '../lib/types'
+import { IngredientType } from '../lib/types'
+import { FaRegTrashAlt } from 'react-icons/fa'
 
 interface InfoInputProps {
-  content: InfoContentType
-  onChange: (data: InfoContentType) => void
+  content: IngredientType
+  onChange: (data: IngredientType) => void
+  onRemove: (id: number) => void
 }
 
-const InfoInput: FC<InfoInputProps> = ({ content, onChange }): JSX.Element => {
+const InfoInput: FC<InfoInputProps> = ({ content, onChange, onRemove }): JSX.Element => {
   // logic
-  const { label, text, placeholder } = content
+  const { label, text } = content
 
   const [value, setValue] = useState('')
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    const data = label === 'mbti' ? event.target.value.toUpperCase() : event.target.value
-    setValue(data)
-    onChange({ ...content, value: data })
+    const { value } = event.target
+    setValue(value)
+    onChange({ ...content, value })
   }
 
   // view
@@ -29,16 +31,22 @@ const InfoInput: FC<InfoInputProps> = ({ content, onChange }): JSX.Element => {
           {text}
         </label>
         <input
-          type={label === 'age' ? 'number' : 'text'}
+          type={'text'}
           id={label}
           name={label}
-          placeholder={placeholder}
+          placeholder={'남은 재료를 입력해주세요'}
           value={value}
           onChange={handleChange}
           className="border placeholder-gray-400 focus:outline-none
-                      focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                      focus:border-black w-full pt-4 pr-9 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
                       border-chef-gray-200 rounded-2xl placeholder:text-chef-gray-200"
         />
+        <button
+          type="button"
+          className="absolute right-3 inset-y-0 flex items-center px-1"
+          onClick={() => onRemove(content.id)}>
+          <FaRegTrashAlt />
+        </button>
       </div>
     </div>
   )

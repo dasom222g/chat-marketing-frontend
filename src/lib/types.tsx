@@ -1,3 +1,11 @@
+export interface IngredientType {
+  id: number
+  label: string // ingredient + id
+  text: string // 재료명
+  value: string // 사용자 입력값
+}
+
+// -----
 // const genders = {
 //   male: 'male',
 //   female: 'female',
