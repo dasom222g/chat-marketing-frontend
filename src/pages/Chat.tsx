@@ -1,16 +1,15 @@
 import React, { FC, useCallback, useEffect, useState } from 'react'
 import MessageBox from '../components/MessageBox'
 import PrevButton from '../components/PrevButton'
-import { InfoType, MessageType } from '../lib/types'
+import { IngredientType, MessageType } from '../lib/types'
 import { MoonLoader } from 'react-spinners'
 
 interface ChatProps {
-  userInfo: InfoType
-  partnerInfo: InfoType
+  ingredientList: IngredientType[]
   endpoint: string
 }
 
-const Chat: FC<ChatProps> = ({ userInfo, partnerInfo, endpoint }): JSX.Element => {
+const Chat: FC<ChatProps> = ({ ingredientList, endpoint }): JSX.Element => {
   // logic
 
   const [value, setValue] = useState('')
@@ -52,22 +51,34 @@ const Chat: FC<ChatProps> = ({ userInfo, partnerInfo, endpoint }): JSX.Element =
     // TODO: 로딩 스피너 on
     setIsInfoLoading(true)
     try {
-      const response = await fetch(`${endpoint}/info`, {
+      const response = await fetch(`${endpoint}/recipe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userInfo, partnerInfo }),
+        body: JSON.stringify({ ingredientList }),
       })
       const result = await response.json()
-      setInfoMessages(result.data)
+
+      // 데이터가 잘 들어온 경우만 실행
+      if (!result.data) return
+      const removeLastDataList = result.data.filter(
+        (_: MessageType, index: number, arr: MessageType[]) => index !== arr.length - 1,
+      )
+      console.log('🚀 ~ sendInfo ~ removeLastDataList:', removeLastDataList)
+      setInfoMessages(removeLastDataList)
+
+      // 마지막 요소인 assistant값 저장
+      const { role, content } = result.data[result.data.length - 1]
+
+      setMessages((prev) => [...prev, { role, content }])
     } catch (error) {
       console.error(error)
     }
     setIsInfoLoading(false)
     // TODO: 로딩 스피너 off
-  }, [endpoint, partnerInfo, userInfo])
+  }, [endpoint, ingredientList])
 
   useEffect(() => {
-    userInfo.name && partnerInfo.name && sendInfo()
+    ingredientList.length && sendInfo()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sendInfo])
 
@@ -77,7 +88,7 @@ const Chat: FC<ChatProps> = ({ userInfo, partnerInfo, endpoint }): JSX.Element =
       {isInfoLoading && (
         <div className="absolute inset-0 bg-white bg-opacity-70">
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <MoonLoader color="#846FFE" />
+            <MoonLoader color="#46A195" />
           </div>
         </div>
       )}
@@ -88,13 +99,13 @@ const Chat: FC<ChatProps> = ({ userInfo, partnerInfo, endpoint }): JSX.Element =
       {/* END:뒤로가기 버튼 */}
       <div className="h-full flex flex-col">
         {/* START:헤더 영역 */}
-        <div className="-mx-6 -mt-10 py-7 bg-chef-blue-600">
-          <span className="block text-xl text-center text-white">{partnerInfo.name}</span>
+        <div className="-mx-6 -mt-10 py-7 bg-chef-green-500">
+          <span className="block text-xl text-center text-white">맛있는 쉐프</span>
         </div>
         {/* END:헤더 영역 */}
         {/* START:채팅 영역 */}
         <div className="overflow-auto">
-          <MessageBox messages={messages} partnerInfo={partnerInfo} isLoading={isMessageLoading} />
+          <MessageBox messages={messages} name={'맛있는 쉐프'} isLoading={isMessageLoading} />
         </div>
         {/* END:채팅 영역 */}
         {/* START:메시지 입력 영역 */}
@@ -111,7 +122,7 @@ const Chat: FC<ChatProps> = ({ userInfo, partnerInfo, endpoint }): JSX.Element =
           <button
             type="submit"
             form="sendForm"
-            className="w-10 min-w-10 h-10 inline-block rounded-full bg-chef-blue-600 text-none px-2 bg-[url('../public/images/send.svg')] bg-no-repeat bg-center">
+            className="w-10 min-w-10 h-10 inline-block rounded-full bg-chef-green-500 text-none px-2 bg-[url('../public/images/send.svg')] bg-no-repeat bg-center">
             보내기
           </button>
         </div>

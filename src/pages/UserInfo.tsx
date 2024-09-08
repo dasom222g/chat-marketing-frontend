@@ -4,15 +4,15 @@ import Button from '../components/Button'
 import InfoInput from '../components/InfoInput'
 import PrevButton from '../components/PrevButton'
 import Title from '../components/Title'
-import { InfoType, IngredientType } from '../lib/types'
+import { IngredientType } from '../lib/types'
 import { FC, useState } from 'react'
 import AddButton from '../components/AddButton'
 
 interface UserInfoProps {
-  addInfo: (info: InfoType) => void
+  sendIngredientList: (ingredientList: IngredientType[]) => void
 }
 
-const UserInfo: FC<UserInfoProps> = ({ addInfo }): JSX.Element => {
+const UserInfo: FC<UserInfoProps> = ({ sendIngredientList }): JSX.Element => {
   // logic
   const history = useNavigate()
 
@@ -30,13 +30,16 @@ const UserInfo: FC<UserInfoProps> = ({ addInfo }): JSX.Element => {
   }
 
   const handleNext = (): void => {
-    // addInfo(userInfo)
     const filterDataList = ingredientList.filter((item) => item.value.trim() !== '')
-    filterDataList.length ? history('/chat') : alert('재료명을 1개이상 입력해주세요')
+    if (filterDataList.length) {
+      sendIngredientList(filterDataList)
+      history('/chat')
+      return
+    }
+    alert('재료명을 1개이상 입력해주세요')
   }
 
   const handleChangeData = (data: IngredientType): void => {
-    console.log('data', data)
     setIngredientList((prev) => prev.map((item) => (item.id === data.id ? data : item)))
   }
 

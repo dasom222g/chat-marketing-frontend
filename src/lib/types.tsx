@@ -57,6 +57,6 @@ export interface InfoContentType {
 }
 
 export interface MessageType {
-  role: 'user' | 'assistant'
+  role: 'user' | 'assistant' | 'system'
   content: string
 }
