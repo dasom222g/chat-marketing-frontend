@@ -16,7 +16,7 @@ const App = (): JSX.Element => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route
-        path="/user-info"
+        path="/info"
         element={<Info sendIngredientList={(data: IngredientType[]) => setIngredientList(data)} />}
       />
       <Route
