@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import UserInfo from './pages/UserInfo'
+import Info from './pages/Info'
 import Home from './pages/Home'
 import Chat from './pages/Chat'
 import { IngredientType } from './lib/types'
@@ -17,9 +17,7 @@ const App = (): JSX.Element => {
       <Route path="/" element={<Home />} />
       <Route
         path="/user-info"
-        element={
-          <UserInfo sendIngredientList={(data: IngredientType[]) => setIngredientList(data)} />
-        }
+        element={<Info sendIngredientList={(data: IngredientType[]) => setIngredientList(data)} />}
       />
       <Route
         path="/chat"

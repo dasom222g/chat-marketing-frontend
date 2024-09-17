@@ -8,11 +8,11 @@ import { IngredientType } from '../lib/types'
 import { FC, useState } from 'react'
 import AddButton from '../components/AddButton'
 
-interface UserInfoProps {
+interface InfoProps {
   sendIngredientList: (ingredientList: IngredientType[]) => void
 }
 
-const UserInfo: FC<UserInfoProps> = ({ sendIngredientList }): JSX.Element => {
+const Info: FC<InfoProps> = ({ sendIngredientList }): JSX.Element => {
   // logic
   const history = useNavigate()
 
@@ -85,4 +85,4 @@ const UserInfo: FC<UserInfoProps> = ({ sendIngredientList }): JSX.Element => {
   )
 }
 
-export default UserInfo
+export default Info
