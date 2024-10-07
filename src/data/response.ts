@@ -44,7 +44,7 @@ export const chatbotFlow: ChatbotFlowType[] = [
       fields: [
         { type: 'textarea', label: '기타 의견 및 제안', placeholder: '의견을 자유롭게 적어주세요', key: 'etc' }
       ],
-      nextId: 4,
+      nextId: 4
     },
   },
 ];

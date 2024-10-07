@@ -1,7 +1,8 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import MessageBox from '../components/MessageBox'
 import { MessageType, UserFormDataType } from '../lib/types'
 import { chatbotFlow } from '../data/response'
+import { initialFormData } from '../data/initialData'
 
 interface ChatProps {
   endpoint: string
@@ -10,11 +11,11 @@ interface ChatProps {
 const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
   // logic
   const [totalStepList, setTotalStepList] = useState([chatbotFlow[0]])
-  const [formData, setFormData] = useState({})
+  const [formData, setFormData] = useState<UserFormDataType | null>(null)
+  const [messages, setMessages] = useState<MessageType[]>([])
 
   const [value, setValue] = useState('')
   const [infoMessages, setInfoMessages] = useState<MessageType[]>([])
-  const [messages, setMessages] = useState<MessageType[]>([])
   const [isMessageLoading, setIsMessageLoading] = useState(false)
 
   const hadleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
@@ -51,13 +52,23 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
 
   const handleStepClick = (type: string, currentId: number, formData?: UserFormDataType): void => {
     console.log('currentId', currentId)
-    if (formData) {
-      // formData 있는 경우
-      setFormData(formData)
-    }
+    // formData 있는 경우 추가
+    formData && setFormData(formData)
+
     const nextId = chatbotFlow.find((item) => item.id === currentId)?.interaction.nextId
-    nextId && handleNextStep(nextId)
+    const isLast = currentId === nextId
+    nextId && !isLast && handleNextStep(nextId)
+
+    if (isLast) {
+      // TODO: GPT 요청
+    }
   }
+
+  useEffect(() => {
+    if (!formData) return
+    // TODO: 데이터 구글시트에 추가 (setDoc)
+    console.log('formData', formData)
+  }, [formData])
 
   // view
   return (
@@ -70,12 +81,7 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
       {/* START:채팅 영역 */}
       <main className="pt-20 h-full">
         <div className="h-full overflow-auto">
-          <MessageBox
-            flowList={totalStepList}
-            name={'AI'}
-            isLoading={false}
-            onNext={handleStepClick}
-          />
+          <MessageBox flowList={totalStepList} isLoading={false} onNext={handleStepClick} />
         </div>
       </main>
       {/* END:채팅 영역 */}

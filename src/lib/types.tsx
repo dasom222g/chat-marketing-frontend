@@ -29,7 +29,7 @@ export interface ChatbotFlowType {
 }
 
 export type InteractionType = {
-  type: 'input' | 'textarea' | 'button'
+  type: 'input' | 'textarea' | 'button' | 'gpt'
 }
 // 필드 키를 유니온 타입으로 정의합니다.
 type FormField =

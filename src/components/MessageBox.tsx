@@ -5,12 +5,11 @@ import { initialFormData } from '../data/initialData'
 
 interface MessageBoxProps {
   flowList: ChatbotFlowType[]
-  name: string
   isLoading: boolean
   onNext: (type: string, id: number, formData?: UserFormDataType) => void
 }
 
-const MessageBox: FC<MessageBoxProps> = ({ flowList, name, isLoading, onNext }): JSX.Element => {
+const MessageBox: FC<MessageBoxProps> = ({ flowList, isLoading, onNext }): JSX.Element => {
   // logic
   const ref = useRef<HTMLDivElement>(null)
 
@@ -90,6 +89,9 @@ const MessageBox: FC<MessageBoxProps> = ({ flowList, name, isLoading, onNext }):
                               rows={10}
                               disabled={step.id !== flowList[flowList.length - 1].id}
                               className="w-full border border-ai-gray-200 rounded-md p-2 disabled:bg-ai-gray-10 disabled:opacity-40 resize-none"
+                              onChange={(e) =>
+                                setFormData((prev) => ({ ...prev, [field.key]: e.target.value }))
+                              }
                             />
                           )}
                         </div>
