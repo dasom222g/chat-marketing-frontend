@@ -2,6 +2,7 @@ import React from 'react'
 import Button from '../components/Button'
 import Title from '../components/Title'
 import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const Home = (): JSX.Element => {
   // logic
@@ -13,20 +14,28 @@ const Home = (): JSX.Element => {
 
   // view
   return (
-    <div className="w-full h-full px-6 pt-10 break-keep overflow-auto">
-      <i className="w-168 h-168 rounded-full bg-chef-green-500 fixed -z-10 -left-60 -top-96"></i>
-      <div className="fixed left-0 top-1/2 transform -translate-y-1/3 -z-10">
-        <img src="./images/hero.svg" alt="hero" />
+    <div className="w-full h-full px-6 pt-10 break-keep overflow-auto bg-ai-purple-500">
+      {/* START:타이틀 영역 */}
+
+      <h1 className="text-6xl text-ai-mint-500 text-center">
+        <p className="text-3xl">병원 원장님을 위한</p>
+        <div className="pt-2">
+          AI <br />
+          마케팅진단
+        </div>
+      </h1>
+      {/* <Title mainTitle={'AI 마케팅진단'} /> */}
+      {/* END:타이틀 영역 */}
+      <div className="">
+        <img src="./images/hero.png" alt="hero" />
       </div>
-      <div className="h-full flex flex-col">
-        {/* START:타이틀 영역 */}
-        <Title
-          mainTitle={'맛있는 쉐프'}
-          subTitle="냉장고에 있는 재료로 뭐 해먹을지 고민되시나요? 남은 재료만 넣으면 맛있는 레시피가 나옵니다!"
-        />
-        {/* END:타이틀 영역 */}
+      <div className="">
         {/* START:Button 영역 */}
-        <Button text="Get started" color="bg-chef-green-500" onClick={handleClick} />
+        <Link
+          to="/chat"
+          className="bg-ai-mint-400 text-ai-orange-500 block px-2 py-4 rounded-xl mx-auto text-center text-4xl shadow-xl w-1/2">
+          Start
+        </Link>
         {/* END:Button 영역 */}
       </div>
     </div>
