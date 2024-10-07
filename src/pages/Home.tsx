@@ -1,16 +1,8 @@
 import React from 'react'
-import Button from '../components/Button'
-import Title from '../components/Title'
-import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 
 const Home = (): JSX.Element => {
   // logic
-  const history = useNavigate()
-
-  const handleClick = (): void => {
-    history('/info')
-  }
 
   // view
   return (
