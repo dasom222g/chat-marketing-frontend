@@ -1,7 +1,7 @@
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import React, { FC, useState } from 'react'
 import MessageBox from '../components/MessageBox'
-import PrevButton from '../components/PrevButton'
 import { MessageType } from '../lib/types'
+import { chatbotFlow } from '../data/response'
 
 interface ChatProps {
   endpoint: string
@@ -9,6 +9,8 @@ interface ChatProps {
 
 const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
   // logic
+  const [totalStepList, setTotalStepList] = useState([chatbotFlow[0]])
+  const [formData, setFormData] = useState({})
 
   const [value, setValue] = useState('')
   const [infoMessages, setInfoMessages] = useState<MessageType[]>([])
@@ -43,6 +45,25 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
     }
     setIsMessageLoading(false)
   }
+
+  const handleNextStep = (nextId: number): void => {
+    // 이미 추가된 경우 실행안함
+    if (totalStepList.find((step) => step.id === nextId)) return
+
+    const nextItem = chatbotFlow.find((item) => item.id === nextId)
+    nextItem && setTotalStepList((prev) => [...prev, nextItem])
+  }
+
+  const handleStepClick = (type: string, currentId: number, formData?: {}): void => {
+    console.log('currentId', currentId)
+    if (formData) {
+      // formData 있는 경우
+      setFormData(formData)
+    }
+    const nextId = chatbotFlow.find((item) => item.id === currentId)?.interaction.nextId
+    nextId && handleNextStep(nextId)
+  }
+
   // view
   return (
     <div className="w-full h-full break-keep overflow-auto">
@@ -54,7 +75,12 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
       {/* START:채팅 영역 */}
       <main className="pt-20 h-full">
         <div className="h-full overflow-auto">
-          <MessageBox messages={messages} name={'맛있는 쉐프'} isLoading={isMessageLoading} />
+          <MessageBox
+            flowList={totalStepList}
+            name={'AI'}
+            isLoading={false}
+            onNext={handleStepClick}
+          />
         </div>
       </main>
       {/* END:채팅 영역 */}
