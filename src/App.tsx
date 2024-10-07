@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import Chat from './pages/Chat'
-import { IngredientType } from './lib/types'
 
 const App = (): JSX.Element => {
   // logic
