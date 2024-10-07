@@ -6,7 +6,7 @@ interface InputField {
   type: string
   label: string
   placeholder: string
-  key: string
+  key: FormField
 }
 
 interface ButtonInteraction {
@@ -30,6 +30,20 @@ export interface ChatbotFlowType {
 
 export type InteractionType = {
   type: 'input' | 'textarea' | 'button'
+}
+// 필드 키를 유니온 타입으로 정의합니다.
+type FormField =
+  | 'name'
+  | 'contact'
+  | 'monthlyRevenue'
+  | 'businessType'
+  | 'address'
+  | 'mainProduct'
+  | 'etc'
+
+// type 키워드를 사용하여 UserFormDataType을 정의합니다.
+export type UserFormDataType = {
+  [key in FormField]: string
 }
 
 export interface MessageType {

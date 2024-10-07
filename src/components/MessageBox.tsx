@@ -1,23 +1,23 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
-import { ChatbotFlowType } from '../lib/types'
+import { ChatbotFlowType, UserFormDataType } from '../lib/types'
 import { PulseLoader } from 'react-spinners'
+import { initialFormData } from '../data/initialData'
 
 interface MessageBoxProps {
   flowList: ChatbotFlowType[]
   name: string
   isLoading: boolean
-  onNext: (type: string, id: number, formData?: {}) => void
+  onNext: (type: string, id: number, formData?: UserFormDataType) => void
 }
 
 const MessageBox: FC<MessageBoxProps> = ({ flowList, name, isLoading, onNext }): JSX.Element => {
   // logic
   const ref = useRef<HTMLDivElement>(null)
 
-  const [formData, setFormData] = useState({})
+  const [formData, setFormData] = useState<UserFormDataType>(initialFormData)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>, type: string, id: number): void => {
     e.preventDefault()
-    console.log('formData', formData)
     onNext(type, id, formData)
   }
 
@@ -72,7 +72,10 @@ const MessageBox: FC<MessageBoxProps> = ({ flowList, name, isLoading, onNext }):
                               id={field.key}
                               type={field.type}
                               name={field.key}
-                              className="border border-ai-gray-200 rounded-md p-2"
+                              value={formData[field.key] || ''}
+                              required={true}
+                              disabled={step.id !== flowList[flowList.length - 1].id}
+                              className="border border-ai-gray-200 rounded-md p-2 disabled:bg-ai-gray-10 disabled:opacity-40"
                               placeholder={field.placeholder}
                               onChange={(e) =>
                                 setFormData((prev) => ({ ...prev, [field.key]: e.target.value }))
@@ -82,9 +85,12 @@ const MessageBox: FC<MessageBoxProps> = ({ flowList, name, isLoading, onNext }):
                             <textarea
                               id={field.key}
                               name={field.key}
-                              placeholder={field.placeholder}>
-                              ff
-                            </textarea>
+                              value={formData[field.key] || ''}
+                              placeholder={field.placeholder}
+                              rows={10}
+                              disabled={step.id !== flowList[flowList.length - 1].id}
+                              className="w-full border border-ai-gray-200 rounded-md p-2 disabled:bg-ai-gray-10 disabled:opacity-40 resize-none"
+                            />
                           )}
                         </div>
                       ))}

@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 import MessageBox from '../components/MessageBox'
-import { MessageType } from '../lib/types'
+import { MessageType, UserFormDataType } from '../lib/types'
 import { chatbotFlow } from '../data/response'
 
 interface ChatProps {
@@ -16,11 +16,6 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
   const [infoMessages, setInfoMessages] = useState<MessageType[]>([])
   const [messages, setMessages] = useState<MessageType[]>([])
   const [isMessageLoading, setIsMessageLoading] = useState(false)
-
-  const hadleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    const { value } = event.target
-    setValue(value)
-  }
 
   const hadleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
@@ -54,7 +49,7 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
     nextItem && setTotalStepList((prev) => [...prev, nextItem])
   }
 
-  const handleStepClick = (type: string, currentId: number, formData?: {}): void => {
+  const handleStepClick = (type: string, currentId: number, formData?: UserFormDataType): void => {
     console.log('currentId', currentId)
     if (formData) {
       // formData 있는 경우
