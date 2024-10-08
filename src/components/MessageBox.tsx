@@ -6,6 +6,7 @@ import { initialFormData } from '../data/initialData'
 
 interface BaseProps {
   isLoading: boolean
+  isLastStep: boolean
   onNext: (type: string, id: number, formData?: UserFormDataType) => void
 }
 
@@ -24,6 +25,7 @@ type MessageBoxProps = FlowProps | GPTProps
 const MessageBox: FC<MessageBoxProps> = ({
   flowList,
   gptMessgeList,
+  isLastStep,
   isLoading,
   onNext,
 }): JSX.Element => {
@@ -77,7 +79,7 @@ const MessageBox: FC<MessageBoxProps> = ({
                     <FormField
                       id={item.id}
                       interaction={item.interaction}
-                      disabled={item.id !== list[list.length - 1].id}
+                      disabled={item.id !== list[list.length - 1].id || isLastStep}
                       onNext={handleNext}
                     />
                   )}

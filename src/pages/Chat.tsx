@@ -3,6 +3,8 @@ import MessageBox from '../components/MessageBox'
 import { GPTMessageType, UserFormDataType } from '../lib/types'
 import { chatbotFlow } from '../data/response'
 import { initialFormData } from '../data/initialData'
+import { useRecoilValue } from 'recoil'
+import { refState } from '../data/data'
 
 interface ChatProps {
   endpoint: string
@@ -14,9 +16,12 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
   const [formData, setFormData] = useState<UserFormDataType | null>(null)
   const [messages, setMessages] = useState<GPTMessageType[]>([])
 
+  const ref = useRecoilValue(refState)
+
   const [value, setValue] = useState('')
   const [infoMessages, setInfoMessages] = useState<GPTMessageType[]>([])
   const [isMessageLoading, setIsMessageLoading] = useState(false)
+  const [isLastStep, setIsLastStep] = useState(false)
 
   const hadleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
@@ -54,24 +59,23 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
   }
 
   const handleStepClick = (type: string, currentId: number, formData?: UserFormDataType): void => {
-    console.log('currentId', currentId)
     // formData 있는 경우 추가
     formData && setFormData(formData)
 
     const nextId = chatbotFlow.find((item) => item.id === currentId)?.interaction.nextId
     const isLast = currentId === nextId
     nextId && !isLast && handleNextStep(nextId)
-
-    if (isLast) {
-      // TODO: GPT 요청
-    }
+    isLast && setIsLastStep(true)
   }
 
   useEffect(() => {
-    if (!formData) return
-    // TODO: 데이터 구글시트에 추가 (setDoc)
-    console.log('formData', formData)
-  }, [formData])
+    if (!isLastStep || !formData) return
+    // TODO: 파이어베이스에 추가 (setDoc)
+    // TODO: 구글시트에 추가
+    // TODO: GPT 요청
+
+    console.log('ref', ref)
+  }, [isLastStep, formData, ref])
 
   // view
   return (
@@ -84,7 +88,12 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
       {/* START:채팅 영역 */}
       <main className="pt-20 h-full">
         <div className="h-full overflow-auto">
-          <MessageBox flowList={totalStepList} isLoading={false} onNext={handleStepClick} />
+          <MessageBox
+            flowList={totalStepList}
+            isLastStep={isLastStep}
+            isLoading={false}
+            onNext={handleStepClick}
+          />
         </div>
       </main>
       {/* END:채팅 영역 */}
