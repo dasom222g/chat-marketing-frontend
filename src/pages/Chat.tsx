@@ -12,6 +12,7 @@ interface ChatProps {
 
 const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
   // logic
+  const SCRIPT_URL = process.env.REACT_APP_GOOGLE_SCRIPT_URL
   const [totalStepList, setTotalStepList] = useState([chatbotFlow[0]])
   const [formData, setFormData] = useState<UserFormDataType | null>(null)
   const [messages, setMessages] = useState<GPTMessageType[]>([])
@@ -68,14 +69,44 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
     isLast && setIsLastStep(true)
   }
 
+  const formatDate = (timestamp: number): string => {
+    const date = new Date(timestamp)
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    const hours = String(date.getHours()).padStart(2, '0')
+    const minutes = String(date.getMinutes()).padStart(2, '0')
+    const seconds = String(date.getSeconds()).padStart(2, '0')
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+  }
+
+  const postGoogleSheets = async (formData: UserFormDataType, createAt: number): Promise<void> => {
+    if (!SCRIPT_URL) return
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, createAt, ref }),
+      })
+      const result = await response.json()
+      console.log('구글시트에 데이터 보내기 완료!!', result)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   useEffect(() => {
     if (!isLastStep || !formData) return
-    // TODO: 파이어베이스에 추가 (setDoc)
+    // TODO: 파이어베이스에 추가 (addDoc)
+    const createAt = Date.now()
+
     // TODO: 구글시트에 추가
+    postGoogleSheets(formData, createAt)
     // TODO: GPT 요청
 
     console.log('ref', ref)
-  }, [isLastStep, formData, ref])
+  }, [isLastStep, formData, ref, postGoogleSheets])
 
   // view
   return (
