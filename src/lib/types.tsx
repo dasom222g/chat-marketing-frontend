@@ -21,7 +21,7 @@ interface InputInteraction {
   nextId: number
 }
 
-type Interaction = ButtonInteraction | InputInteraction
+export type Interaction = ButtonInteraction | InputInteraction
 export interface ChatbotFlowType {
   id: number
   message: string
@@ -46,7 +46,8 @@ export type UserFormDataType = {
   [key in FormField]: string
 }
 
-export interface MessageType {
+export interface GPTMessageType {
+  id: number
   role: 'user' | 'assistant' | 'system'
-  content: string
+  message: string
 }

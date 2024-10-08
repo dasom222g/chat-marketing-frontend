@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
 import MessageBox from '../components/MessageBox'
-import { MessageType, UserFormDataType } from '../lib/types'
+import { GPTMessageType, UserFormDataType } from '../lib/types'
 import { chatbotFlow } from '../data/response'
 import { initialFormData } from '../data/initialData'
 
@@ -12,21 +12,21 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
   // logic
   const [totalStepList, setTotalStepList] = useState([chatbotFlow[0]])
   const [formData, setFormData] = useState<UserFormDataType | null>(null)
-  const [messages, setMessages] = useState<MessageType[]>([])
+  const [messages, setMessages] = useState<GPTMessageType[]>([])
 
   const [value, setValue] = useState('')
-  const [infoMessages, setInfoMessages] = useState<MessageType[]>([])
+  const [infoMessages, setInfoMessages] = useState<GPTMessageType[]>([])
   const [isMessageLoading, setIsMessageLoading] = useState(false)
 
   const hadleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
-    const userMessage: MessageType = { role: 'user', content: value.trim() }
+    const userMessage: GPTMessageType = { id: Date.now(), role: 'user', message: value.trim() }
     setMessages((prev) => [...prev, userMessage])
     sendMessage(userMessage)
     setValue('') // input 초기화
   }
 
-  const sendMessage = async (userMessage: MessageType): Promise<void> => {
+  const sendMessage = async (userMessage: GPTMessageType): Promise<void> => {
     setIsMessageLoading(true)
     try {
       const response = await fetch(`${endpoint}/message`, {
@@ -35,7 +35,10 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
         body: JSON.stringify({ userMessage, messages: [...infoMessages, ...messages] }),
       })
       const result = await response.json()
-      setMessages((prev) => [...prev, { role: 'assistant', content: result.data.content }])
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now(), role: 'assistant', message: result.data.message },
+      ])
     } catch (error) {
       console.error(error)
     }

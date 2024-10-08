@@ -1,4 +1,4 @@
-import { ChatbotFlowType, MessageType } from '../lib/types';
+import { ChatbotFlowType, GPTMessageType } from '../lib/types';
 
 export const chatbotFlow: ChatbotFlowType[] = [
   {
@@ -50,13 +50,10 @@ export const chatbotFlow: ChatbotFlowType[] = [
 ];
 
 
-export const messages: MessageType[] = [
+export const gptMessages: GPTMessageType[] = [
   {
-    role: 'user',
-    content: 'user입니다'
-  },
-  {
+    id: 1,
     role: 'assistant',
-    content: 'assistant입니다'
+    message: 'assistant입니다'
   },
 ]
