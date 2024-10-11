@@ -16,32 +16,27 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
   const SCRIPT_URL = process.env.REACT_APP_GOOGLE_SCRIPT_URL
   const [totalStepList, setTotalStepList] = useState([chatbotFlow[0]])
   const [formData, setFormData] = useState<UserFormDataType | null>(null)
-  const [messages, setMessages] = useState<GPTMessageType[]>([])
-
-  const ref = useRecoilValue(refState)
-
-  const [value, setValue] = useState('')
-  const [infoMessages, setInfoMessages] = useState<GPTMessageType[]>([])
-  const [isMessageLoading, setIsMessageLoading] = useState(false)
   const [isLastStep, setIsLastStep] = useState(false)
 
-  const hadleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-    event.preventDefault()
-    const userMessage: GPTMessageType = { id: Date.now(), role: 'user', message: value.trim() }
-    setMessages((prev) => [...prev, userMessage])
-    sendMessage(userMessage)
-    setValue('') // input 초기화
-  }
+  // gpt
+  const [messages, setMessages] = useState<GPTMessageType[]>([])
+  const [isMessageLoading, setIsMessageLoading] = useState(false)
+
+  // 진입 경로
+  const ref = useRecoilValue(refState)
 
   const sendMessage = async (userMessage: GPTMessageType): Promise<void> => {
+    console.log('userMessage', userMessage)
     setIsMessageLoading(true)
     try {
       const response = await fetch(`${endpoint}/message`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userMessage, messages: [...infoMessages, ...messages] }),
+        body: JSON.stringify({ userMessage, messages: [...messages] }),
       })
+      // gpt 답변
       const result = await response.json()
+      console.log('🚀 ~ result:', result)
       setMessages((prev) => [
         ...prev,
         { id: Date.now(), role: 'assistant', message: result.data.message },
@@ -49,7 +44,7 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
     } catch (error) {
       console.error(error)
     }
-    setIsMessageLoading(false)
+    // setIsMessageLoading(false)
   }
 
   const handleNextStep = (nextId: number): void => {
@@ -88,17 +83,35 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
   const postFormData = useCallback(
     async (data: UserFormDataType): Promise<void> => {
       console.log('추가 시작!!')
+      setIsMessageLoading(true)
+      const createAt = Date.now()
       try {
         const res = await addDoc(collection(db, 'info'), {
           ...data,
           ref,
-          createAt: Date.now(), // 작성 시간을 밀리초 단위로 저장
+          createAt, // 작성 시간을 밀리초 단위로 저장
         })
         console.log('추가 완료!!', res)
+        console.log('챗GPT 요청')
+
+        // TODO: GPT 요청
+        const { name, contact, monthlyRevenue, businessType, address, mainProduct, etc } = data
+        const userMessage: GPTMessageType = {
+          id: createAt,
+          role: 'user',
+          message: `1. **이름**: ${name}
+2. **연락처**:  ${contact}
+3. **매출(월)**:  ${monthlyRevenue}
+4. **업종**:  ${businessType}
+5. **주소**:  ${address}
+6. **주요상품**:  ${mainProduct}
+7. **의견**:  ${etc}`,
+        }
+        await sendMessage(userMessage)
       } catch (e) {
         console.error(e)
       } finally {
-        // setIsLoading(false);
+        // setIsMessageLoading(false)
       }
     },
     [ref],
@@ -111,9 +124,11 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
     postFormData(formData)
 
     // TODO: 구글시트에 추가
-
-    // TODO: GPT 요청
   }, [isLastStep, formData, postFormData])
+
+  useEffect(() => {
+    console.log('🚀 ~ isMessageLoading:', isMessageLoading)
+  }, [isMessageLoading])
 
   // view
   return (
@@ -129,7 +144,7 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
           <MessageBox
             flowList={totalStepList}
             isLastStep={isLastStep}
-            isLoading={false}
+            isLoading={isMessageLoading}
             onNext={handleStepClick}
           />
         </div>

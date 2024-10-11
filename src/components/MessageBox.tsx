@@ -56,7 +56,7 @@ const MessageBox: FC<MessageBoxProps> = ({
       behavior: 'smooth',
       block: 'end',
     })
-  }, [list])
+  }, [list, isLoading])
 
   // view
   return (
