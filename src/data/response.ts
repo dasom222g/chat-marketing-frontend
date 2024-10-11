@@ -1,4 +1,4 @@
-import { ChatbotFlowType, GPTMessageType } from '../lib/types';
+import { ChatbotFlowType, GPTMessageType } from '../lib/types'
 
 export const chatbotFlow: ChatbotFlowType[] = [
   {
@@ -7,7 +7,7 @@ export const chatbotFlow: ChatbotFlowType[] = [
     interaction: {
       type: 'button',
       options: [{ text: '네!' }],
-      nextId: 2
+      nextId: 2,
     },
   },
   {
@@ -29,9 +29,19 @@ export const chatbotFlow: ChatbotFlowType[] = [
       type: 'input',
       fields: [
         { type: 'text', label: '매출(월 00만원)', placeholder: '000', key: 'monthlyRevenue' },
-        { type: 'text', label: '업종', placeholder: '치의/한의/요양/외과/내과', key: 'businessType' },
+        {
+          type: 'text',
+          label: '업종',
+          placeholder: '치의/한의/요양/외과/내과',
+          key: 'businessType',
+        },
         { type: 'text', label: '주소', placeholder: '주소 입력하기', key: 'address' },
-        { type: 'text', label: '주요상품', placeholder: '주요상품을 적어주세요', key: 'mainProduct' },
+        {
+          type: 'text',
+          label: '주요상품',
+          placeholder: '주요상품을 적어주세요',
+          key: 'mainProduct',
+        },
       ],
       nextId: 4,
     },
@@ -42,18 +52,34 @@ export const chatbotFlow: ChatbotFlowType[] = [
     interaction: {
       type: 'textarea',
       fields: [
-        { type: 'textarea', label: '기타 의견 및 제안', placeholder: '의견을 자유롭게 적어주세요', key: 'etc' }
+        {
+          type: 'textarea',
+          label: '기타 의견 및 제안',
+          placeholder: '의견을 자유롭게 적어주세요',
+          key: 'etc',
+        },
       ],
-      nextId: 4
+      nextId: 5,
     },
   },
-];
-
+  {
+    id: 5,
+    message:
+      '감사합니다^^\n통화나 컨설팅을 희망하시면 희망일정을 작성해주세요. 그럼 지금까지 입력해주신 정보를 바탕으로 AI가 맞춤형 마케팅 전략을 제안해드리겠습니다.',
+    interaction: {
+      type: 'input',
+      fields: [
+        { type: 'text', label: '희망일정', placeholder: '2024-11-11/없음', key: 'schedule' },
+      ],
+      nextId: 5,
+    },
+  },
+]
 
 export const gptMessages: GPTMessageType[] = [
   {
     id: 1,
     role: 'assistant',
-    message: 'assistant입니다'
+    message: 'assistant입니다',
   },
 ]

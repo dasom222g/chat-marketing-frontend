@@ -40,6 +40,7 @@ type FormField =
   | 'address'
   | 'mainProduct'
   | 'etc'
+  | 'schedule'
 
 // type 키워드를 사용하여 UserFormDataType을 정의합니다.
 export type UserFormDataType = {

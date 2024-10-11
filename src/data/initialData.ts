@@ -1,4 +1,4 @@
-import { UserFormDataType } from '../lib/types';
+import { UserFormDataType } from '../lib/types'
 
 export const initialFormData: UserFormDataType = {
   name: '',
@@ -7,5 +7,6 @@ export const initialFormData: UserFormDataType = {
   businessType: '',
   address: '',
   mainProduct: '',
-  etc: ''
-};
+  etc: '',
+  schedule: '',
+}
