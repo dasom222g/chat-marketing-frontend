@@ -1,10 +1,11 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import MessageBox from '../components/MessageBox'
 import { GPTMessageType, UserFormDataType } from '../lib/types'
 import { chatbotFlow } from '../data/response'
-import { initialFormData } from '../data/initialData'
 import { useRecoilValue } from 'recoil'
 import { refState } from '../data/data'
+import { addDoc, collection } from 'firebase/firestore'
+import { db } from '../firebase'
 
 interface ChatProps {
   endpoint: string
@@ -69,18 +70,6 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
     isLast && setIsLastStep(true)
   }
 
-  const formatDate = (timestamp: number): string => {
-    const date = new Date(timestamp)
-    const year = date.getFullYear()
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    const hours = String(date.getHours()).padStart(2, '0')
-    const minutes = String(date.getMinutes()).padStart(2, '0')
-    const seconds = String(date.getSeconds()).padStart(2, '0')
-
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
-  }
-
   const postGoogleSheets = async (formData: UserFormDataType, createAt: number): Promise<void> => {
     if (!SCRIPT_URL) return
     try {
@@ -96,17 +85,35 @@ const Chat: FC<ChatProps> = ({ endpoint }): JSX.Element => {
     }
   }
 
+  const postFormData = useCallback(
+    async (data: UserFormDataType): Promise<void> => {
+      console.log('추가 시작!!')
+      try {
+        const res = await addDoc(collection(db, 'info'), {
+          ...data,
+          ref,
+          createAt: Date.now(), // 작성 시간을 밀리초 단위로 저장
+        })
+        console.log('추가 완료!!', res)
+      } catch (e) {
+        console.error(e)
+      } finally {
+        // setIsLoading(false);
+      }
+    },
+    [ref],
+  )
+
   useEffect(() => {
     if (!isLastStep || !formData) return
-    // TODO: 파이어베이스에 추가 (addDoc)
-    const createAt = Date.now()
+    // 마지막 flow이면서 입력값이 있을때
+    // 파이어베이스에 데이터 추가
+    postFormData(formData)
 
     // TODO: 구글시트에 추가
-    postGoogleSheets(formData, createAt)
-    // TODO: GPT 요청
 
-    console.log('ref', ref)
-  }, [isLastStep, formData, ref, postGoogleSheets])
+    // TODO: GPT 요청
+  }, [isLastStep, formData, postFormData])
 
   // view
   return (
